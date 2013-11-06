@@ -1,11 +1,20 @@
 package com.cy.lpw.autoupdate;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.cy.lpw.autoupdate.config.ConfigurationUtil;
 
 
 public class CheckUpdate implements Runnable{
+	private static final long MILLI_SEC_IN_ONE_MIN = 60000;
 	public static boolean keepRunning = true;
 	private long updateAvailablePingInterval=36000000;
 	private Date lastUpdateDownloadDate;
@@ -25,13 +34,32 @@ public class CheckUpdate implements Runnable{
 		String url = getUpdatePingUrl();
 		System.out.println(url);
 		String output = pingServer(url);
+		System.out.println("Output from server is :"+output);
 	}
 	private String pingServer(String url) {
-		// TODO Auto-generated method stub
-		return null;
+		String responseString = null;
+		 try {
+		        URL obj = new URL(url);
+		        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		        con.setRequestMethod("get");
+		        System.out.println(con.getInputStream());
+		        int responseCode = con.getResponseCode();
+		        InputStream response = con.getInputStream();
+		        BufferedReader reader = new BufferedReader(new InputStreamReader(response));
+		        responseString = reader.readLine();
+		        System.out.println("Response Code : " + responseCode);
+		        System.out.println("Response String : " + responseString);
+		        
+		    } catch (ConnectException e) {
+		        System.out.println("ALERT Now");
+		       e.printStackTrace();
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		return responseString;
 	}
 	private String getUpdatePingUrl() {
-		String url = ConfigurationUtil.getUpdateAvailableUrl()+"?"+ConfigurationUtil.getLastUpdateDateRequestParamName()+"="+lastUpdateDownloadDate;
+		String url = ConfigurationUtil.getUpdateAvailableURL()+"?"+ConfigurationUtil.getLastUpdateDateRequestParamName()+"="+lastUpdateDownloadDate;
 		url = url+ "&"+ConfigurationUtil.getUserNameParam()+"="+getUserName()+"&"+ConfigurationUtil.getPasswordParam()+"="+getPassword();
 		return url;
 	}
@@ -45,9 +73,16 @@ public class CheckUpdate implements Runnable{
 	}
 	private void loadConfigurations() {
 		String intervalStr = ConfigurationUtil.getUpdateAvailablePingInterval();
-		updateAvailablePingInterval = Long.parseLong(intervalStr);
+		updateAvailablePingInterval = Long.parseLong(intervalStr);// it is in mins
+		updateAvailablePingInterval = updateAvailablePingInterval * MILLI_SEC_IN_ONE_MIN;
 		//TODO this should be read from some file or Preferences
-		lastUpdateDownloadDate = new Date("2013-11-04"); 
+//		lastUpdateDownloadDate = new Date(); 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			lastUpdateDownloadDate = sdf.parse("2013-11-04");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	

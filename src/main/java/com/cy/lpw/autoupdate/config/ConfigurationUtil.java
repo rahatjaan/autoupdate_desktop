@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class ConfigurationUtil {
 	public static String UPDATE_AVAILABLE_URL = "update_available_url";
-	public static String UPDATE_AVAILABLE_LAST_UPDATE = "update_available_lastupdate_request_param";
+	public static String LAST_UPDATE_DATE = "update_available_lastupdate_request_param";
 	public static String USER_NAME_PARAM = "update_available_lastupdate_request_username";
 	public static String PASSWORD_PARAM = "update_available_lastupdate_request_password";
 	public static String UPDATE_AVAILABLE_PING_INTERVAL = "update_available_check_interval_in_mins";
@@ -32,16 +32,20 @@ public class ConfigurationUtil {
 	}
 	
 	public static String getPasswordParam() {
-		return getString(USER_NAME_PARAM);
+		return getString(PASSWORD_PARAM);
 	}
 	
 
-	public static String getUpdateAvailableUrl() {
-		return getString(UPDATE_AVAILABLE_LAST_UPDATE);
+	public static String getUpdateDate() {
+		return getString(LAST_UPDATE_DATE);
+	}
+	
+	public static String getUpdateAvailableURL() {
+		return getString(UPDATE_AVAILABLE_URL);
 	}
 	
 	public static String getLastUpdateDateRequestParamName() {
-		return getString(PASSWORD_PARAM);
+		return getString(LAST_UPDATE_DATE);
 	}
 	
 	public static String getUpdateAvailablePingInterval() {
