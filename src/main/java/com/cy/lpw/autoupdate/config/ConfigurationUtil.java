@@ -8,7 +8,8 @@ public class ConfigurationUtil {
 	public static String UPDATE_AVAILABLE_LAST_UPDATE = "update_available_lastupdate_request_param";
 	public static String USER_NAME_PARAM = "update_available_lastupdate_request_username";
 	public static String PASSWORD_PARAM = "update_available_lastupdate_request_password";
-
+	public static String UPDATE_AVAILABLE_PING_INTERVAL = "update_available_check_interval_in_mins";
+	
 	static Properties props = new Properties();
 	static {
 
@@ -26,21 +27,26 @@ public class ConfigurationUtil {
 		return props.getProperty(key);
 	}
 
-	public static String getUserNameParam(String key) {
+	public static String getUserNameParam() {
 		return getString(USER_NAME_PARAM);
 	}
 	
-	public static String getPasswordParam(String key) {
+	public static String getPasswordParam() {
 		return getString(USER_NAME_PARAM);
 	}
 	
 
-	public static String getUpdateAvailableUrl(String key) {
+	public static String getUpdateAvailableUrl() {
 		return getString(UPDATE_AVAILABLE_LAST_UPDATE);
 	}
 	
-	public static String getLastUpdateDateRequestParamName(String key) {
+	public static String getLastUpdateDateRequestParamName() {
 		return getString(PASSWORD_PARAM);
 	}
+	
+	public static String getUpdateAvailablePingInterval() {
+		return getString(UPDATE_AVAILABLE_PING_INTERVAL);
+	}
+	
 
 }
