@@ -18,7 +18,14 @@ public class CheckUpdate implements Runnable{
 	public static boolean keepRunning = true;
 	private long updateAvailablePingInterval=36000000;
 	private Date lastUpdateDownloadDate;
+	//TODO for now I am using hard coded date, this needs to be fixed
+	private String formattedLastUpdateDate = "2013-11-08";
 	
+	public static void main(String []args){
+		CheckUpdate update = new CheckUpdate();
+		update.loadConfigurations();
+		update.checkUpdate();
+	}
 	public void run() {
 		loadConfigurations();
 		while(keepRunning){
@@ -41,7 +48,7 @@ public class CheckUpdate implements Runnable{
 		 try {
 		        URL obj = new URL(url);
 		        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		        con.setRequestMethod("get");
+		        con.setRequestMethod("GET");
 		        System.out.println(con.getInputStream());
 		        int responseCode = con.getResponseCode();
 		        InputStream response = con.getInputStream();
@@ -59,7 +66,7 @@ public class CheckUpdate implements Runnable{
 		return responseString;
 	}
 	private String getUpdatePingUrl() {
-		String url = ConfigurationUtil.getUpdateAvailableURL()+"?"+ConfigurationUtil.getLastUpdateDateRequestParamName()+"="+lastUpdateDownloadDate;
+		String url = ConfigurationUtil.getUpdateAvailableURL()+"?"+ConfigurationUtil.getLastUpdateDateRequestParamName()+"="+formattedLastUpdateDate;
 		url = url+ "&"+ConfigurationUtil.getUserNameParam()+"="+getUserName()+"&"+ConfigurationUtil.getPasswordParam()+"="+getPassword();
 		return url;
 	}
@@ -79,7 +86,8 @@ public class CheckUpdate implements Runnable{
 //		lastUpdateDownloadDate = new Date(); 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
-			lastUpdateDownloadDate = sdf.parse("2013-11-04");
+			lastUpdateDownloadDate = sdf.parse(formattedLastUpdateDate);
+			formattedLastUpdateDate = sdf.format(lastUpdateDownloadDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
