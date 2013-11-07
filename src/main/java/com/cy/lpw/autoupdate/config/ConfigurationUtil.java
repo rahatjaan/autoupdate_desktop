@@ -16,7 +16,7 @@ public class ConfigurationUtil {
 		try {
 			props.load(ConfigurationUtil.class.getClassLoader()
 					.getResourceAsStream("settings.properties"));
-			System.out.println(getString("host"));
+//			System.out.println(getString("host"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
