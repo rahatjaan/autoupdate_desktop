@@ -1,5 +1,7 @@
 package com.cy.lpw.autoupdate;
 
+import java.io.IOException;
+
 import javax.swing.ImageIcon;
 
 import ch.swingfx.twinkle.NotificationBuilder;
@@ -9,6 +11,8 @@ import ch.swingfx.twinkle.style.INotificationStyle;
 import ch.swingfx.twinkle.style.theme.DarkDefaultNotification;
 import ch.swingfx.twinkle.window.IPosition;
 import ch.swingfx.twinkle.window.Positions;
+
+import com.cy.lpw.autoupdate.config.ConfigurationUtil;
 
 public class NotificationUtil {
 
@@ -41,6 +45,15 @@ public class NotificationUtil {
 
 					public void clicked(NotificationEvent event) {
 						System.out.println("clicked notification with UUID " + event.getId());
+						if("DOWNLOAD".equalsIgnoreCase(ConfigurationUtil.EVENT)){
+							new Thread(new DownloadUpdateThread()).start();
+						}else if("INSTALL".equalsIgnoreCase(ConfigurationUtil.EVENT)){
+							try {
+								Process p = Runtime.getRuntime().exec(new String[] {"cmd.exe", "/c", ConfigurationUtil.getWatchFilePath()});
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
 //						SanMarWidgetMessagesWindow window = SanMarWidgetMessagesWindow.getInstance();
 //						window.setVisible(true);
 						//window.addMessage(message);

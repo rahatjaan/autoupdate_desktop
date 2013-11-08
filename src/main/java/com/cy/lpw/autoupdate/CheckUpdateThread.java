@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +46,7 @@ public class CheckUpdateThread implements Runnable{
 		String output = pingServer(url);
 		System.out.println("Output from server is :"+output);
 		if(output.equals("true")){
+			ConfigurationUtil.EVENT = "DOWNLOAD";
 			NotificationUtil.showNotification("Light Point Web", "New Update is available. Click here to download the update.", "notification.png", Positions.SOUTH_EAST);
 			
 		}
@@ -73,7 +75,8 @@ public class CheckUpdateThread implements Runnable{
 		return responseString;
 	}
 	private String getUpdatePingUrl() {
-		String url = ConfigurationUtil.getUpdateAvailableURL()+"?"+ConfigurationUtil.getLastUpdateDateRequestParamName()+"="+formattedLastUpdateDate;
+		//String url = ConfigurationUtil.getUpdateAvailableURL()+"?"+ConfigurationUtil.getLastUpdateDateRequestParamName()+"="+formattedLastUpdateDate;
+		String url = ConfigurationUtil.getUpdateAvailableURL()+"?"+ConfigurationUtil.getLastUpdateDateRequestParamName()+"="+ConfigurationUtil.getLastUpdateDate();
 		url = url+ "&"+ConfigurationUtil.getUserNameParam()+"="+getUserName()+"&"+ConfigurationUtil.getPasswordParam()+"="+getPassword();
 		return url;
 	}
