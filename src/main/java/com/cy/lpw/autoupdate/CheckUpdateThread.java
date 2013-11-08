@@ -10,19 +10,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import ch.swingfx.twinkle.window.Positions;
+
 import com.cy.lpw.autoupdate.config.ConfigurationUtil;
 
 
-public class CheckUpdate implements Runnable{
+public class CheckUpdateThread implements Runnable{
 	private static final long MILLI_SEC_IN_ONE_MIN = 60000;
 	public static boolean keepRunning = true;
 	private long updateAvailablePingInterval=36000000;
 	private Date lastUpdateDownloadDate;
 	//TODO for now I am using hard coded date, this needs to be fixed
-	private String formattedLastUpdateDate = "2013-11-08";
+	private String formattedLastUpdateDate = "2013-11-04";
 	
 	public static void main(String []args){
-		CheckUpdate update = new CheckUpdate();
+		CheckUpdateThread update = new CheckUpdateThread();
 		update.loadConfigurations();
 		update.checkUpdate();
 	}
@@ -42,6 +44,11 @@ public class CheckUpdate implements Runnable{
 		System.out.println(url);
 		String output = pingServer(url);
 		System.out.println("Output from server is :"+output);
+		if(output.equals("true")){
+			NotificationUtil.showNotification("Light Point Web", "New Update is available. Click here to download the update.", "notification.png", Positions.SOUTH_EAST);
+			
+		}
+		
 	}
 	private String pingServer(String url) {
 		String responseString = null;
