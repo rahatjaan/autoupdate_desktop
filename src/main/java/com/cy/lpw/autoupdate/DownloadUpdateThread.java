@@ -29,16 +29,37 @@ public class DownloadUpdateThread implements Runnable {
 					NotificationUtil.showNotification("Light Point Web", "File has been downloaded successfully. Click on the notification to start installation.", "notification.png", Positions.SOUTH_EAST);
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
+	
+	public static void main(String []args){
+		startInstaller();
+		/*
+		try {
+			if(downloadFile()){
+				ConfigurationUtil.EVENT = "INSTALL";
+				NotificationUtil.showNotification("Light Point Web", "File has been downloaded successfully. Click on the notification to start installation.", "notification.png", Positions.SOUTH_EAST);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+	}
 
+	public static void startInstaller(){
+		try {
+			String file = ConfigurationUtil.getDownloadFileLocation();
+			System.out.println("File:"+file);
+			Process p = Runtime.getRuntime().exec(new String[] {"cmd.exe", "/c", file});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	public static boolean downloadFile() throws IOException {
 		boolean flag = false;
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpGet httpget = new HttpGet(
-				"http://localhost:8080/autoupdateweb/downloadupdate");
+		HttpGet httpget = new HttpGet(ConfigurationUtil.getDownloadUrl());
 		HttpResponse response = httpclient.execute(httpget);
 		System.out.println(response.getStatusLine());
 		HttpEntity entity = response.getEntity();
@@ -46,7 +67,7 @@ public class DownloadUpdateThread implements Runnable {
 			InputStream instream = entity.getContent();
 			try {
 				BufferedInputStream bis = new BufferedInputStream(instream);
-				String filePath = ConfigurationUtil.getWatchFilePath();
+				String filePath = ConfigurationUtil.getDownloadFileLocation();
 				BufferedOutputStream bos = new BufferedOutputStream(
 						new FileOutputStream(new File(filePath)));
 				int inByte;

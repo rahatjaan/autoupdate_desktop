@@ -6,10 +6,6 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import ch.swingfx.twinkle.window.Positions;
 
@@ -20,12 +16,9 @@ public class CheckUpdateThread implements Runnable{
 	private static final long MILLI_SEC_IN_ONE_MIN = 60000;
 	public static boolean keepRunning = true;
 	private long updateAvailablePingInterval=36000000;
-	private Date lastUpdateDownloadDate;
-	//TODO for now I am using hard coded date, this needs to be fixed
-	private String formattedLastUpdateDate = "2013-11-04";
-	
 	public static void main(String []args){
 		CheckUpdateThread update = new CheckUpdateThread();
+		ConfigurationUtil.setLastUpdateDate("2013-09-05");
 		update.loadConfigurations();
 		update.checkUpdate();
 	}
@@ -92,15 +85,6 @@ public class CheckUpdateThread implements Runnable{
 		String intervalStr = ConfigurationUtil.getUpdateAvailablePingInterval();
 		updateAvailablePingInterval = Long.parseLong(intervalStr);// it is in mins
 		updateAvailablePingInterval = updateAvailablePingInterval * MILLI_SEC_IN_ONE_MIN;
-		//TODO this should be read from some file or Preferences
-//		lastUpdateDownloadDate = new Date(); 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			lastUpdateDownloadDate = sdf.parse(formattedLastUpdateDate);
-			formattedLastUpdateDate = sdf.format(lastUpdateDownloadDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 	}
 
 	

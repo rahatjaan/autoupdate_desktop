@@ -18,6 +18,7 @@ public class ConfigurationUtil {
 	public static String EVENT = "";
 	private static final String WATCH_FOLDER_KEY = "watch_folder";
 	private static final String WATCH_File_KEY = "installer_file";
+	private static final String UPDATE_DOWNLOAD_URL = "update_download_url";
 	
 	static Properties props = new Properties();
 	static {
@@ -82,12 +83,25 @@ public class ConfigurationUtil {
 		return props.getProperty(WATCH_FOLDER_KEY)+File.separator+props.getProperty(WATCH_File_KEY);
 	}
 	
+	public static String getDownloadFileName(){
+		return props.getProperty(WATCH_File_KEY);
+	}
+	
+	
 	public static String getLastUpdateDateRequestParamName() {
 		return getString(LAST_UPDATE_DATE);
 	}
 	
 	public static String getUpdateAvailablePingInterval() {
 		return getString(UPDATE_AVAILABLE_PING_INTERVAL);
+	}
+
+	public static String getDownloadUrl() {
+		return getString(UPDATE_DOWNLOAD_URL);
+	}
+
+	public static String getDownloadFileLocation() {
+		return System.getProperty("user.home")+File.separator+getDownloadFileName();
 	}
 	
 

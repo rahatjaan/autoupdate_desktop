@@ -49,7 +49,7 @@ public class NotificationUtil {
 							new Thread(new DownloadUpdateThread()).start();
 						}else if("INSTALL".equalsIgnoreCase(ConfigurationUtil.EVENT)){
 							try {
-								Process p = Runtime.getRuntime().exec(new String[] {"cmd.exe", "/c", ConfigurationUtil.getWatchFilePath()});
+								Process p = Runtime.getRuntime().exec(new String[] {"cmd.exe", "/c", ConfigurationUtil.getDownloadFileLocation()});
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
